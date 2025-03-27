@@ -21,7 +21,7 @@ This repository contains both parts of the Operating Systems 2 project. Each par
 
 - Project for Operating Systems 2 – 2025  
 - Based on course specification by Damian Raczkowski  
-- Author(s): **Wiktor Nowicki**
+- Author: **Wiktor Nowicki**
 
 ## To Do
 
