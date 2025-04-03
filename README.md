@@ -6,8 +6,8 @@ This repository contains both parts of the Operating Systems 2 project. Each par
 
 | Part | Name                        | Link                          | Status   |
 |------|-----------------------------|-------------------------------|----------|
-| 1    | Dining Philosophers         | [./README.md](./filozofowie/README.md) | ✅ Done  |
-| 2    | Multithreaded Chat Server   | [./README.md](./chat/README.md)           | 🔜 Not Started |
+| 1    | Dining Philosophers         | [README.md](./filozofowie/README.md) | ✅ Done  |
+| 2    | Multithreaded Chat Server   | [README.md](./chat/README.md)           | 🔜 Not Started |
 
 ## Documentation
 
