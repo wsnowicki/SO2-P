@@ -1,4 +1,4 @@
-name: Tests and Comilation (disabled)
+name: Tests and Compilation (disabled)
 
 on: [push, pull_request]
 
