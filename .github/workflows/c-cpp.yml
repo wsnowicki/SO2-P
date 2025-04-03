@@ -23,4 +23,4 @@ jobs:
     - name: Uruchomienie programu z argumentem (5 filozofów)
       run: |
         cd indywidualny
-        ./nazwa_pliku_wykonywalnego 5
+        ./filozofowie 5
