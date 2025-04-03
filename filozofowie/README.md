@@ -27,7 +27,7 @@ make
 ### Run
 
 ```bash
-./philosophers <number_of_philosophers>
+./philosophers <number_of_philosophers> [limit_in_seconds]
 ```
 
 Example:
@@ -76,7 +76,7 @@ Philosopher 0 is eating.
 
 ## Notes
 
-- The simulation runs indefinitely.
+- The simulation runs indefinitely or for specified (in a second argument) number of seconds (no second argument or `0` value disables the limit).
 - All console outputs are synchronized to avoid interleaving using an I/O mutex.
 - This project is intended as the first part of the SO2 (Operating Systems 2) course.
 
