@@ -16,7 +16,6 @@ public:
     void dine() {
         while (!(*stop_flag)) {
             think();
-            if (*stop_flag) break;
 
             if (even_strategy && id % 2 == 0) {
                 pick_up_right();
@@ -39,12 +38,12 @@ private:
     bool even_strategy;
     atomic<bool>* stop_flag;
 
-    void think() {
+    void think() const {
         print_state("is thinking");
         this_thread::sleep_for(random_time());
     }
 
-    void eat() {
+    void eat() const {
         print_state("is eating");
         this_thread::sleep_for(random_time());
     }
@@ -65,12 +64,12 @@ private:
         print_state("put down forks");
     }
 
-    void print_state(const string& state) {
+    void print_state(const string& state) const {
         lock_guard<mutex> guard(io_mutex);
         cout << "Philosopher " << id << " " << state << "." << endl;
     }
 
-    chrono::milliseconds random_time() {
+    static chrono::milliseconds random_time() {
         static thread_local mt19937 rng(random_device{}());
         uniform_int_distribution<int> dist(500, 1500);
         return chrono::milliseconds(dist(rng));
@@ -81,7 +80,7 @@ private:
 
 mutex Philosopher::io_mutex;
 
-int main(int argc, char* argv[]) {
+int main(int argc, const char* argv[]) {
     if (argc < 2 || argc > 3) {
         cerr << "Usage: " << argv[0] << " <number_of_philosophers> [max_execution_time_in_seconds]" << endl;
         return 1;
