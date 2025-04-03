@@ -31,7 +31,7 @@ jobs:
         make
 
 
-    - name: Uruchomienie programu z argumentem (5 filozofów)
+    - name: Run the program with argument (5 philosophers, for 120 seconds)
       if: env.TEST_RUN == 'true'
       run: |
         cd filozofowie
