@@ -1,0 +1,26 @@
+name: Kompilacja i testy
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repozytorium
+      uses: actions/checkout@v3
+
+    - name: Instalacja zależności
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ make
+
+    - name: Kompilacja programu
+      run: |
+        cd indywidualny
+        make
+
+    - name: Uruchomienie programu z argumentem (5 filozofów)
+      run: |
+        cd indywidualny
+        ./nazwa_pliku_wykonywalnego 5
