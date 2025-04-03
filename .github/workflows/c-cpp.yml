@@ -23,4 +23,4 @@ jobs:
     - name: Uruchomienie programu z argumentem (5 filozofów)
       run: |
         cd filozofowie
-        ./filozofowie 5
+        ./filozofowie 5 120

@@ -4,17 +4,20 @@
 #include <vector>
 #include <chrono>
 #include <random>
+#include <atomic>
 
 using namespace std;
 
 class Philosopher {
 public:
-    Philosopher(int id, mutex* left, mutex* right, bool even_strategy)
-        : id(id), left_fork(left), right_fork(right), even_strategy(even_strategy) {}
+    Philosopher(int id, mutex* left, mutex* right, bool even_strategy, atomic<bool>* stop_flag)
+        : id(id), left_fork(left), right_fork(right), even_strategy(even_strategy), stop_flag(stop_flag) {}
 
     void dine() {
-        while (true) {
+        while (!(*stop_flag)) {
             think();
+            if (*stop_flag) break;
+
             if (even_strategy && id % 2 == 0) {
                 pick_up_right();
                 pick_up_left();
@@ -22,9 +25,11 @@ public:
                 pick_up_left();
                 pick_up_right();
             }
+
             eat();
             put_down();
         }
+        print_state("is done dining");
     }
 
 private:
@@ -32,6 +37,7 @@ private:
     mutex* left_fork;
     mutex* right_fork;
     bool even_strategy;
+    atomic<bool>* stop_flag;
 
     void think() {
         print_state("is thinking");
@@ -76,8 +82,8 @@ private:
 mutex Philosopher::io_mutex;
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <number_of_philosophers>" << endl;
+    if (argc < 2 || argc > 3) {
+        cerr << "Usage: " << argv[0] << " <number_of_philosophers> [max_execution_time_in_seconds]" << endl;
         return 1;
     }
 
@@ -87,15 +93,29 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    int max_time = 0;
+    if (argc == 3) {
+        max_time = stoi(argv[2]);
+    }
+
+    atomic<bool> stop_flag(false);
+
+    if (max_time > 0) {
+        thread([&stop_flag, max_time]() {
+            this_thread::sleep_for(chrono::seconds(max_time));
+            stop_flag = true;
+        }).detach();
+    }
+
     vector<mutex> forks(N);
     vector<thread> philosophers;
 
     for (int i = 0; i < N; ++i) {
         mutex* left = &forks[i];
         mutex* right = &forks[(i + 1) % N];
-        bool even_strategy = true; // Prevent deadlock by changing fork pickup order for some philosophers
+        bool even_strategy = true;
 
-        philosophers.emplace_back(&Philosopher::dine, Philosopher(i, left, right, even_strategy));
+        philosophers.emplace_back(&Philosopher::dine, Philosopher(i, left, right, even_strategy, &stop_flag));
     }
 
     for (auto& p : philosophers) {
