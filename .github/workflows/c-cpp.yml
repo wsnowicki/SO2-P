@@ -1,4 +1,4 @@
-name: Kompilacja i testy
+name: Tests and Comilation (disabled)
 
 on: [push, pull_request]
 
@@ -12,7 +12,7 @@ jobs:
     - name: Checkout repozytorium
       uses: actions/checkout@v3
 
-    - name: Instalacja zależności cppcheck
+    - name: Install cppcheck dependency
       run: |
         sudo apt-get update
         sudo apt-get install -y cppcheck
@@ -20,11 +20,11 @@ jobs:
     - name: Run cppcheck
       run: cppcheck --enable=all --check-level=exhaustive --suppress=missingIncludeSystem --inconclusive filozofowie/main.cpp
 
-    - name: Instalacja zależności Kompilacja
+    - name: Install comilation dependencies
       if: env.TEST_RUN == 'true'
       run: sudo apt-get install -y g++ make
 
-    - name: Kompilacja programu
+    - name: Compile the program
       if: env.TEST_RUN == 'true'
       run: |
         cd filozofowie
