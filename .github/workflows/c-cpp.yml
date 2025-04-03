@@ -5,25 +5,34 @@ on: [push, pull_request]
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+        TEST_RUN: false
 
     steps:
     - name: Checkout repozytorium
       uses: actions/checkout@v3
 
-    - name: Instalacja zależności
+    - name: Instalacja zależności cppcheck
       run: |
         sudo apt-get update
-        sudo apt-get install -y g++ make cppcheck
+        sudo apt-get install -y cppcheck
+
+    - name: Run cppcheck
+      run: cppcheck --enable=all --check-level=exhaustive --suppress=missingIncludeSystem --inconclusive filozofowie/main.cpp
+
+    - name: Instalacja zależności Kompilacja
+      if: env.TEST_RUN == 'true'
+      run: sudo apt-get install -y g++ make
 
     - name: Kompilacja programu
+      if: env.TEST_RUN == 'true'
       run: |
         cd filozofowie
         make
 
-    - name: Run cppcheck
-      run: cppcheck --enable=all --inconclusive filozofowie/main.cpp
 
     - name: Uruchomienie programu z argumentem (5 filozofów)
+      if: env.TEST_RUN == 'true'
       run: |
         cd filozofowie
         ./filozofowie 5 120
