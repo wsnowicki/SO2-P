@@ -17,10 +17,10 @@ jobs:
 
     - name: Kompilacja programu
       run: |
-        cd indywidualny
+        cd filozofowie
         make
 
     - name: Uruchomienie programu z argumentem (5 filozofów)
       run: |
-        cd indywidualny
+        cd filozofowie
         ./filozofowie 5
