@@ -1,6 +1,12 @@
 name: Tests and Compilation (disabled)
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'filozofowie/**'
+  pull_request:
+    paths:
+      - 'filozofowie/**'
 
 jobs:
   build-and-test:
