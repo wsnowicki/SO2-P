@@ -132,4 +132,5 @@ chat/
 - Project for Operating Systems 2 – 2025  
 - Instructor: Damian Raczkowski  
 - Author: Wiktor Nowicki
+
 [Go to repo's README](../README.md)
