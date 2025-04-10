@@ -11,6 +11,7 @@ init(autoreset=True)
 LOG_LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR"]
 current_log_level = "INFO"
 
+
 def log(level, msg):
     if LOG_LEVELS.index(level) < LOG_LEVELS.index(current_log_level):
         return
@@ -20,7 +21,9 @@ def log(level, msg):
     }.get(level, "")
     print(f"{color}[{level}]{Style.RESET_ALL} {msg}")
 
+
 def log_debug(msg): log("DEBUG", msg)
+
 
 class ChatClientGUI:
     def __init__(self, master, ip, port):
@@ -108,8 +111,9 @@ class ChatClientGUI:
         if msg.startswith("/"):
             try:
                 self.sock.sendall((msg + "\n").encode())
-            except:
-                self.display_message("System", "Send failed")
+            except Exception as e:
+                log_debug(f"Send error: {e}")
+                self.display_message("System", f"Send failed: {e}")
             return
 
         if current_tab == "System":
@@ -124,8 +128,9 @@ class ChatClientGUI:
         try:
             self.sock.sendall((cmd + "\n").encode())
             self.display_message("You", msg, tab=current_tab)
-        except:
-            self.display_message("System", "Send failed")
+        except Exception as e:
+            log_debug(f"Send error: {e}")
+            self.display_message("System", f"Send failed: {e}")
 
     def receive_messages(self):
         buffer = ""
@@ -138,7 +143,9 @@ class ChatClientGUI:
                 while "\n" in buffer:
                     line, buffer = buffer.split("\n", 1)
                     self.route_message(line.strip())
-            except:
+            except Exception as e:
+                log_debug(f"Receive error: {e}")
+                self.display_message("System", f"Receive failed: {e}")
                 break
         self.sock.close()
 

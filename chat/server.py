@@ -17,6 +17,7 @@ lock = threading.Lock()
 LOG_LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR"]
 log_level = "INFO"
 
+
 def log(level, msg):
     if LOG_LEVELS.index(level) < LOG_LEVELS.index(log_level):
         return
@@ -26,10 +27,12 @@ def log(level, msg):
     }.get(level, "")
     print(f"{color}[{level}]{Style.RESET_ALL} {msg}")
 
+
 def log_debug(msg): log("DEBUG", msg)
 def log_info(msg): log("INFO", msg)
 def log_warning(msg): log("WARNING", msg)
 def log_error(msg): log("ERROR", msg)
+
 
 def load_user_history(username):
     file = f"chat_history/{username}.json"
@@ -37,6 +40,7 @@ def load_user_history(username):
         with open(file, 'r') as f:
             return json.load(f)
     return []
+
 
 def save_message(username, sender, content, recipient=None, group=None):
     os.makedirs("chat_history", exist_ok=True)
@@ -53,6 +57,7 @@ def save_message(username, sender, content, recipient=None, group=None):
         json.dump(history, f, indent=2)
     log_debug(f"Saved message for {username} from {sender} → {recipient or group or 'self'}")
 
+
 def save_group_to_db(db_path, group_name, members):
     with lock:
         conn = sqlite3.connect(db_path)
@@ -64,6 +69,7 @@ def save_group_to_db(db_path, group_name, members):
         conn.commit()
         conn.close()
     log_info(f"Group '{group_name}' saved with: {', '.join(members)}")
+
 
 def load_groups_from_db(db_path):
     loaded = {}
@@ -80,6 +86,7 @@ def load_groups_from_db(db_path):
     except Exception as e:
         log_error(f"Failed to load groups from DB: {e}")
     return loaded
+
 
 def handle_client(conn, addr, db_path):
     username = None
@@ -163,6 +170,7 @@ def handle_client(conn, addr, db_path):
                 log_info(f"{username} disconnected")
         conn.close()
 
+
 def start_server(ip, port, db_path):
     sock = socket.socket()
     sock.bind((ip, port))
@@ -171,6 +179,7 @@ def start_server(ip, port, db_path):
     while True:
         conn, addr = sock.accept()
         threading.Thread(target=handle_client, args=(conn, addr, db_path)).start()
+
 
 def main():
     global log_level
@@ -187,6 +196,7 @@ def main():
     groups.update(load_groups_from_db(args.db))
     log_info(f"Loaded groups: {list(groups.keys())}")
     start_server(args.ip, args.port, args.db)
+
 
 if __name__ == "__main__":
     main()
