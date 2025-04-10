@@ -121,7 +121,8 @@ chat/
 ├── client.py       # GUI client (tkinter)
 ├── server.py       # TCP multithreaded server
 ├── README.md       # This file
-└── chat_history/   # Auto-generated per-user logs
+├── chat_history/   # Auto-generated per-user logs
+└── chat.db         # Sqlite3 database
 ```
 
 ---
@@ -130,4 +131,5 @@ chat/
 
 - Project for Operating Systems 2 – 2025  
 - Instructor: Damian Raczkowski  
-- Author: Wiktor Nowicki  
+- Author: Wiktor Nowicki
+[Go to repo's README](../README.md)
