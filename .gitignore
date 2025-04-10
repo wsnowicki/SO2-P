@@ -1,1 +1,7 @@
-filozofowie/filozofowie
+**/venv/
+**/filozofowie
+**/.env
+**/*.json
+**/chat_history/
+**/chat.db
+**/.old

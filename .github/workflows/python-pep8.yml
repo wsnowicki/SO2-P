@@ -1,0 +1,33 @@
+name: Lint Chat (PEP8)
+
+on:
+  push:
+    paths:
+      - 'chat/**'
+  pull_request:
+    paths:
+      - 'chat/**'
+
+jobs:
+  lint:
+    name: Flake8 Lint for Chat
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install flake8
+      run: pip install flake8
+
+    - name: Run flake8 checks
+      run: |
+        echo "Running flake8 on ./chat"
+        flake8 chat --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 chat --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics
+
