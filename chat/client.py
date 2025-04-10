@@ -198,6 +198,7 @@ class ChatClientGUI:
         else:
             self.display_message("System", msg)
 
+
 if __name__ == "__main__":
     root = tk.Tk()
     parser = argparse.ArgumentParser()
